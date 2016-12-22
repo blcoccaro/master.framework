@@ -2,7 +2,7 @@
 
 namespace master.framework.dto
 {
-    public class ResponseGrid<T> where T : class
+    public class ResponseGrid<T> : ResponseBase where T : class
     {
         public TimeStampKeeper Timestamp { get; set; } = new TimeStampKeeper();
         public int TotalRows { get; set; }

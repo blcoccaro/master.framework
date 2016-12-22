@@ -7,7 +7,7 @@
         {
             if (!isMapped)
             {
-                AutoMapper.Mapper.Reset();
+                //AutoMapper.Mapper.Reset();
                 isMapped = true;
             }
         }
@@ -16,10 +16,11 @@
             isMapped = false;
         }
 
+        [System.Obsolete("Não existe mais", true)]
         public static void Mapper<TSource, TDestination>()
         {
-            var exist = AutoMapper.Mapper.FindTypeMapFor<TSource, TDestination>();
-            if (exist == null) { AutoMapper.Mapper.CreateMap<TSource, TDestination>().ReverseMap(); }
+            //var exist = AutoMapper.Mapper.FindTypeMapFor<TSource, TDestination>();
+            //if (exist == null) { AutoMapper.Mapper.CreateMap<TSource, TDestination>().ReverseMap(); }
         }
     }
 }

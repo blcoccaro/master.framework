@@ -6,6 +6,32 @@ namespace master.framework
     {
         public static class MasterFramework
         {
+            public static class Database
+            {
+                public static class Historical
+                {
+                    public static bool isOFF
+                    {
+                        get
+                        {
+                            bool ret = false;
+                            try
+                            {
+                                string aux = System.Configuration.ConfigurationManager.AppSettings["Configuration::MasterFramework::Database::Historical::isOFF"];
+                                aux = aux ?? string.Empty;
+                                if (aux.ToLower() == "true")
+                                {
+                                    ret = true;
+                                }
+                            }
+                            catch (Exception)
+                            {
+                            }
+                            return ret;
+                        }
+                    }
+                }
+            }
             public static class Service
             {
                 public static class Debug

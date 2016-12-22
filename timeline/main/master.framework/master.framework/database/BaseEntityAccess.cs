@@ -206,9 +206,18 @@ namespace master.framework.database
         public void Delete<TModel>(System.Linq.Expressions.Expression<Func<TModel, bool>> predicate)
             where TModel : class
         {
-            TModel obj = null;
-            obj = db.Set<TModel>().FirstOrDefault(predicate);
-            if (obj != null) { db.Set<TModel>().Remove(obj); }
+            List<TModel> lst = null;
+            lst = db.Set<TModel>().Where(predicate).ToList();
+            if (lst.Count > 0)
+            {
+                foreach (var item in lst)
+                {
+                    if (item != null)
+                    {
+                        db.Set<TModel>().Remove(item);
+                    }
+                }
+            }
             db.SaveChanges();
         }
         #endregion
@@ -226,7 +235,7 @@ namespace master.framework.database
         /// <param name="sort">Property to order</param>
         /// <param name="sortdir">Order direction</param>
         /// <returns></returns>
-        public dto.ResponseGrid<TDTO> GetListSimple<TDTO, TModel>(Expression<Func<TModel, bool>> where = null, IQueryable<TModel> startQuery = null, System.Linq.Expressions.Expression<Func<TModel, bool>> predicateInsideAux = null, int page = 0, int pageSize = 10, string sort = "", bool count = true)
+        public dto.ResponseGrid<TDTO> GetListSimple<TDTO, TModel>(Expression<Func<TModel, bool>> where = null, IQueryable<TModel> startQuery = null, System.Linq.Expressions.Expression<Func<TModel, bool>> predicateInsideAux = null, int page = 0, int pageSize = 10, string sort = "", bool count = true, bool onlyCount = false)
             where TDTO : class
             where TModel : class
         {
@@ -266,12 +275,16 @@ namespace master.framework.database
 
             #region COUNT
             TimestampKeeper.AddStartNative("GetLisSimple.TotalRows", DateTime.Now);
-            if (count)
+            if (count || onlyCount)
             {
                 totalrows = query.Count();
                 ret.TotalRows = totalrows;
             }
-            TimestampKeeper.AddEndNative("GetLisSimple.TotalRows", DateTime.Now); 
+            if (onlyCount)
+            {
+                return ret;
+            }
+            TimestampKeeper.AddEndNative("GetLisSimple.TotalRows", DateTime.Now);
             #endregion
 
             #region ORDER BY
@@ -316,7 +329,7 @@ namespace master.framework.database
         /// <param name="sort">Property to order</param>
         /// <param name="sortdir">Order direction</param>
         /// <returns></returns>
-        public dto.ResponseGrid<TClass> GetListSimple<TClass>(Expression<Func<TClass, bool>> where = null, IQueryable<TClass> startQuery = null, System.Linq.Expressions.Expression<Func<TClass, bool>> predicateInsideAux = null, int page = 0, int pageSize = 10, string sort = "Id ASC", bool count = true)
+        public dto.ResponseGrid<TClass> GetListSimple<TClass>(Expression<Func<TClass, bool>> where = null, IQueryable<TClass> startQuery = null, System.Linq.Expressions.Expression<Func<TClass, bool>> predicateInsideAux = null, int page = 0, int pageSize = 10, string sort = "Id ASC", bool count = true, bool onlyCount = false)
             where TClass : class
         {
             return GetListSimple<TClass, TClass>(where, startQuery, predicateInsideAux, page, pageSize, sort, count);
@@ -335,7 +348,7 @@ namespace master.framework.database
             where TSource : class
             where TDestination : class
         {
-            MappingEngine.Mapper<TSource, TDestination>();
+            //MappingEngine.Mapper<TSource, TDestination>();
             return AutoMapper.Mapper.Map<TSource, TDestination>(source);
         }
 
@@ -350,7 +363,7 @@ namespace master.framework.database
             where TSource : class
             where TDestination : class
         {
-            MappingEngine.Mapper<TSource, TDestination>();
+            //MappingEngine.Mapper<TSource, TDestination>();
             return AutoMapper.Mapper.Map<List<TSource>, List<TDestination>>(source);
         }
         #endregion

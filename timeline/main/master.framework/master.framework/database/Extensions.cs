@@ -2,11 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 
 namespace master.framework.database
 {
     public static class Extensions
     {
+        public static dto.DataLogging ToDataLogging(this System.Data.Entity.Validation.DbEntityValidationException obj)
+        {
+            dto.DataLogging ret = new dto.DataLogging();
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var failure in obj.EntityValidationErrors)
+            {
+                string entityName = failure.Entry.Entity.GetType().Name;
+                sb.AppendFormat("Erro na entidade {0}. ", entityName);
+                foreach (var error in failure.ValidationErrors)
+                {                    
+                    sb.AppendFormat("{0} : {1}", error.PropertyName, error.ErrorMessage);
+                    sb.AppendLine();
+                }
+            }
+            ret.Message = sb.ToString();
+            ret.Source = "EntityFramework - " + obj.Source;
+            ret.StackTrace = obj.StackTrace;
+            return ret;
+        }
         #region Extensions for System.Linq.IQueryable
         public static IQueryable<T> SkipTake<T>(this IQueryable<T> query, int page, int pageSize)
         {

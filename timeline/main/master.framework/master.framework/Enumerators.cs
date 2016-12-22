@@ -13,6 +13,16 @@
             End,
             Middle,
         }
+        public enum HistoricalType
+        {
+            ByProperty,
+            ByObject,
+        }
+        public enum CreatedOrUpdatedType
+        {
+            User,
+            Date
+        }
         public enum CreatedType
         {
             User,

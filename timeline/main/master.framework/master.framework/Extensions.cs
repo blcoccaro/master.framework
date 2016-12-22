@@ -15,6 +15,18 @@ namespace master.framework
             return ret;
 
         }
+        public static master.framework.attribute.database.WithHistorical GetHistoricalAtt(this System.Reflection.PropertyInfo property)
+        {
+            var ret = property.GetCustomAttributes(typeof(master.framework.attribute.database.WithHistorical), true).FirstOrDefault() as master.framework.attribute.database.WithHistorical;
+            return ret;
+
+        }
+        public static master.framework.attribute.database.CreatedOrUpdated GetCreatedOrUpdatedAtt(this System.Reflection.PropertyInfo property)
+        {
+            var ret = property.GetCustomAttributes(typeof(master.framework.attribute.database.CreatedOrUpdated), true).FirstOrDefault() as master.framework.attribute.database.CreatedOrUpdated;
+            return ret;
+
+        }
         public static master.framework.attribute.database.Updated GetUpdatedAtt(this System.Reflection.PropertyInfo property)
         {
             var ret = property.GetCustomAttributes(typeof(master.framework.attribute.database.Updated), true).FirstOrDefault() as master.framework.attribute.database.Updated;
@@ -38,7 +50,7 @@ namespace master.framework
 
             while (aux != null)
             {
-                ret.Message += count.ToString() + ": " + aux.Message;
+                ret.Message += (string.IsNullOrWhiteSpace(ret.Message) ? "" : " ") + aux.Message;
                 ret.StackTrace += count.ToString() + ": " + aux.StackTrace;
                 ret.Source += count.ToString() + ": " + aux.Source;
 
@@ -50,6 +62,51 @@ namespace master.framework
         #endregion
 
         #region Extensions for System.Int and System.Int?
+        public static string ToMonthPTBR(this int value, bool diminutive = false)
+        {
+            string ret = string.Empty;
+            switch (value)
+            {
+                case 1:
+                    ret = "Janeiro";
+                    break;
+                case 2:
+                    ret = "Fevereiro";
+                    break;
+                case 3:
+                    ret = "Março";
+                    break;
+                case 4:
+                    ret = "Abril";
+                    break;
+                case 5:
+                    ret = "Maio";
+                    break;
+                case 6:
+                    ret = "Junho";
+                    break;
+                case 7:
+                    ret = "Julho";
+                    break;
+                case 8:
+                    ret = "Agosto";
+                    break;
+                case 9:
+                    ret = "Setembro";
+                    break;
+                case 10:
+                    ret = "Outubro";
+                    break;
+                case 11:
+                    ret = "Novembro";
+                    break;
+                case 12:
+                    ret = "Dezembro";
+                    break;
+            }
+            if (diminutive) { ret = ret.Substring(0, 3); }
+            return ret;
+        }
         public static bool IsAdd(this int obj)
         {
             return obj == 0;
@@ -189,6 +246,101 @@ namespace master.framework
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
         }
+        public static double? ToDoubleNull(this string value)
+        {
+            double ret = 0;
+
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                value = value.Normalize2();
+                NumberStyles style1 = NumberStyles.AllowDecimalPoint;
+                NumberStyles style2 = NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands;
+                CultureInfo cultureBR = CultureInfo.GetCultureInfo("pt-BR");
+                CultureInfo cultureEN = CultureInfo.GetCultureInfo("en-US");
+                CultureInfo cultureINV = CultureInfo.InvariantCulture;
+
+
+                if (!double.TryParse(value, value.Contains(".") && value.Contains(",") ? style2 : style1, cultureBR, out ret))
+                {
+                    ret = 0;
+                    if (!double.TryParse(value, value.Contains(".") && value.Contains(",") ? style2 : style1, cultureEN, out ret))
+                    {
+                        ret = 0;
+                        if (!double.TryParse(value, value.Contains(".") && value.Contains(",") ? style2 : style1, cultureINV, out ret))
+                        {
+                            ret = 0;
+                            ret = value.ToDouble2();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                return null;
+            }
+
+            return ret;
+        }
+        public static double ToDouble(this string value)
+        {
+            double ret = 0;
+
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                value = value.Normalize2();
+                NumberStyles style1 = NumberStyles.AllowDecimalPoint;
+                NumberStyles style2 = NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands;
+                CultureInfo cultureBR = CultureInfo.GetCultureInfo("pt-BR");
+                CultureInfo cultureEN = CultureInfo.GetCultureInfo("en-US");
+                CultureInfo cultureINV = CultureInfo.InvariantCulture;
+
+
+                if (!double.TryParse(value, value.Contains(".") && value.Contains(",") ? style2 : style1, cultureBR, out ret))
+                {
+                    ret = 0;
+                    if (!double.TryParse(value, value.Contains(".") && value.Contains(",") ? style2 : style1, cultureEN, out ret))
+                    {
+                        ret = 0;
+                        if (!double.TryParse(value, value.Contains(".") && value.Contains(",") ? style2 : style1, cultureINV, out ret))
+                        {
+                            ret = 0;
+                            ret = value.ToDouble2();
+                        }
+                    }
+                }
+            }
+
+            return ret;
+        }
+        public static double ToDouble2(this string value)
+        {
+            double ret = 0;
+
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                value = value.Normalize3();
+                NumberStyles style = NumberStyles.AllowDecimalPoint;
+                CultureInfo cultureBR = CultureInfo.GetCultureInfo("pt-BR");
+                CultureInfo cultureEN = CultureInfo.GetCultureInfo("en-US");
+                CultureInfo cultureINV = CultureInfo.InvariantCulture;
+
+                if (!double.TryParse(value, style, cultureBR, out ret))
+                {
+                    ret = 0;
+                    if (!double.TryParse(value, style, cultureEN, out ret))
+                    {
+                        ret = 0;
+                        if (!double.TryParse(value, style, cultureINV, out ret))
+                        {
+                            ret = 0;
+                            throw new Exception("Não foi possível converter para número.");
+                        }
+                    }
+                }
+            }
+
+            return ret;
+        }
         public static decimal ToDecimal(this string value)
         {
             decimal ret = decimal.Zero;
@@ -279,6 +431,43 @@ namespace master.framework
                 ret.AppendFormat("<br />{0}", item);
             }
             return ret.ToString();
+        }
+        #endregion
+
+        #region Extensions for System.Enum
+        public static string GetDescription(this Enum value)
+        {
+            System.Reflection.FieldInfo field = value.GetType().GetField(value.ToString());
+
+            System.ComponentModel.DescriptionAttribute attribute
+                    = Attribute.GetCustomAttribute(field, typeof(System.ComponentModel.DescriptionAttribute))
+                        as System.ComponentModel.DescriptionAttribute;
+
+            return attribute == null ? value.ToString() : attribute.Description;
+        }
+        #endregion
+
+        #region Extensions for System.Double and System.Double?
+        public static string ToMoney(this double? value, bool zeroIfNull = false, int round = 2, string culture = "pt-br")
+        {
+            string ret = string.Empty;
+            if (value.HasValue)
+            {
+                ret = value.Value.ToMoney(round, culture);
+            }
+            else
+            {
+                if (zeroIfNull) { ret = ((double)0M).ToMoney(round, culture); }
+            }
+
+            return ret;
+        }
+        public static string ToMoney(this double value, int round = 2, string culture = "pt-br")
+        {
+            string ret = string.Empty;
+
+            ret = Math.Round(value, round).ToString("C", CultureInfo.CreateSpecificCulture(culture));
+            return ret;
         }
         #endregion
     }
