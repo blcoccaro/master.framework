@@ -8,7 +8,9 @@ namespace master.framework.dto
 {
     public class RequestBase
     {
-        public string IdUserFromRequest { get; set; }
+        public string UserId { get; set; }
+        public string UserLogin { get; set; }
+        public string UserEmail { get; set; }
         public List<String> ListIdUserRequest { get; set; }
     }
 }

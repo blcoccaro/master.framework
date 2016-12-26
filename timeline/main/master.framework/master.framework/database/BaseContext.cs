@@ -231,7 +231,41 @@ namespace master.framework.database
                                                 switch (createdAtt?.CreatedType)
                                                 {
                                                     case Enumerators.CreatedOrUpdatedType.User:
-                                                        itemProperty.SetValue(item.Value.Entity, userid);
+                                                        {
+                                                            System.Type propertyType = itemProperty.GetType();
+                                                            System.TypeCode propertyTypeCode = Type.GetTypeCode(propertyType);
+                                                            if (itemProperty.PropertyType.IsGenericType && itemProperty.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                                                            {
+                                                                propertyTypeCode = Type.GetTypeCode(itemProperty.PropertyType.GetGenericArguments()[0]);
+                                                            }
+                                                            switch (propertyTypeCode)
+                                                            {
+                                                                case TypeCode.Int16:
+                                                                case TypeCode.UInt16:
+                                                                    if (!string.IsNullOrWhiteSpace(userid))
+                                                                    {
+                                                                        itemProperty.SetValue(item.Value.Entity, short.Parse(userid));
+                                                                    }
+                                                                    break;
+                                                                case TypeCode.Int32:
+                                                                case TypeCode.UInt32:
+                                                                    if (!string.IsNullOrWhiteSpace(userid))
+                                                                    {
+                                                                        itemProperty.SetValue(item.Value.Entity, int.Parse(userid));
+                                                                    }
+                                                                    break;
+                                                                case TypeCode.Int64:
+                                                                case TypeCode.UInt64:
+                                                                    if (!string.IsNullOrWhiteSpace(userid))
+                                                                    {
+                                                                        itemProperty.SetValue(item.Value.Entity, long.Parse(userid));
+                                                                    }
+                                                                    break;
+                                                                case TypeCode.String:
+                                                                    itemProperty.SetValue(item.Value.Entity, userid);
+                                                                    break;
+                                                            }
+                                                        }
                                                         break;
                                                     case Enumerators.CreatedOrUpdatedType.Date:
                                                         itemProperty.SetValue(item.Value.Entity, DateTime.Now);
@@ -404,7 +438,41 @@ namespace master.framework.database
                                                 switch (createdAtt?.CreatedType)
                                                 {
                                                     case Enumerators.CreatedOrUpdatedType.User:
-                                                        itemProperty.SetValue(item.Value.Entity, userid);
+                                                        {
+                                                            System.Type propertyType = itemProperty.GetType();
+                                                            System.TypeCode propertyTypeCode = Type.GetTypeCode(propertyType);
+                                                            if (itemProperty.PropertyType.IsGenericType && itemProperty.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                                                            {
+                                                                propertyTypeCode = Type.GetTypeCode(itemProperty.PropertyType.GetGenericArguments()[0]);
+                                                            }
+                                                            switch (propertyTypeCode)
+                                                            {
+                                                                case TypeCode.Int16:
+                                                                case TypeCode.UInt16:
+                                                                    if (!string.IsNullOrWhiteSpace(userid))
+                                                                    {
+                                                                        itemProperty.SetValue(item.Value.Entity, short.Parse(userid));
+                                                                    }
+                                                                    break;
+                                                                case TypeCode.Int32:
+                                                                case TypeCode.UInt32:
+                                                                    if (!string.IsNullOrWhiteSpace(userid))
+                                                                    {
+                                                                        itemProperty.SetValue(item.Value.Entity, int.Parse(userid));
+                                                                    }
+                                                                    break;
+                                                                case TypeCode.Int64:
+                                                                case TypeCode.UInt64:
+                                                                    if (!string.IsNullOrWhiteSpace(userid))
+                                                                    {
+                                                                        itemProperty.SetValue(item.Value.Entity, long.Parse(userid));
+                                                                    }
+                                                                    break;
+                                                                case TypeCode.String:
+                                                                    itemProperty.SetValue(item.Value.Entity, userid);
+                                                                    break;
+                                                            }
+                                                        }
                                                         break;
                                                     case Enumerators.CreatedOrUpdatedType.Date:
                                                         itemProperty.SetValue(item.Value.Entity, DateTime.Now);
@@ -513,7 +581,7 @@ namespace master.framework.database
                         dto.HistoricalEvent histEvent = dto.HistoricalEvent.InstanceAdd(item.Value.Entity, item.Value.EntitySet.Name, keyName, keyValue);
                         HistoricalCreated(this, histEvent);
                     }
-                } 
+                }
             }
             #endregion
 
