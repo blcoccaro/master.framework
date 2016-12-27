@@ -15,7 +15,7 @@ namespace master.framework.dto
         public string Token { get; set; }
         public DateTime? TokenValidUntil { get; set; }
 
-        public List<string> Actions { get; set; }
-        public List<string> IdList { get; set; }
+        public List<string> Actions { get; set; } = new List<string>();
+        public List<IdAux> IdList { get; set; } = new List<IdAux>();
     }
 }

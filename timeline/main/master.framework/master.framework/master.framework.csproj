@@ -90,6 +90,7 @@
     <Compile Include="dto\EmailMessage.cs" />
     <Compile Include="dto\ForEach.cs" />
     <Compile Include="dto\Historical.cs" />
+    <Compile Include="dto\IdAux.cs" />
     <Compile Include="dto\Pagination.cs" />
     <Compile Include="dto\RequestBase.cs" />
     <Compile Include="dto\RequestBaseGrid.cs" />
