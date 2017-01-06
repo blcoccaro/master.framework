@@ -12,6 +12,7 @@ namespace master.framework.dto
         public string Name { get; set; }
         public string Mail { get; set; }
         public string Login { get; set; }
+        public string Domain { get; set; }
         public string Token { get; set; }
         public DateTime? TokenValidUntil { get; set; }
 
