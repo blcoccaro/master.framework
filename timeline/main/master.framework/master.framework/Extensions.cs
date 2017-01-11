@@ -8,6 +8,20 @@ namespace master.framework
 {
     public static class Extensions
     {
+        #region #region Extensions for System.Reflection.Assembly
+        /// <summary>
+        /// Get FileVersion of Assembly call with System.Reflection.Assembly.GetExecutingAssembly()
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <returns></returns>
+        public static string Version(this System.Reflection.Assembly assembly)
+        {
+            System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+            string ret = fvi.FileVersion;
+            return ret;
+        } 
+        #endregion
+
         #region Extensions for System.Reflection.PropertyInfo
         public static master.framework.attribute.database.Created GetCreatedAtt(this System.Reflection.PropertyInfo property)
         {
