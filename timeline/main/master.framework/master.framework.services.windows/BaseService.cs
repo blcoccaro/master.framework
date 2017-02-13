@@ -164,6 +164,11 @@ namespace master.framework.services.windows
         {
             throw new NotImplementedException();
         }
+
+        public void CallBack(int messageType, string message)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
         #endregion

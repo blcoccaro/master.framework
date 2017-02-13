@@ -10,5 +10,7 @@ namespace master.framework.interfaces
         bool isDebugMode { get; set; }
         dto.service.Message Messages { get; set; }
         void Beacon(string serviceId = null, string message = null);
+
+        void CallBack(int messageType, string message);
     }
 }
