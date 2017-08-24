@@ -19,7 +19,7 @@ namespace master.framework
             System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
             string ret = fvi.FileVersion;
             return ret;
-        } 
+        }
         #endregion
 
         #region Extensions for System.Reflection.PropertyInfo
@@ -448,6 +448,27 @@ namespace master.framework
         }
         #endregion
 
+        #region Extensions for System.Collections.Generic.List<System.String>
+        public static void Add(this Dictionary<string, string> obj, string key, string value)
+        {
+            if (obj.Any(o => o.Key == key))
+            {
+                obj[key] = value;
+            }
+            else
+            {
+                obj.Add(key, value);
+            }
+        }
+        public static void Remove(this Dictionary<string, string> obj, string key)
+        {
+            if (obj.Any(o => o.Key == key))
+            {
+                obj.Remove(key);
+            }
+        }
+        #endregion
+
         #region Extensions for System.Enum
         public static string GetDescription(this Enum value)
         {
@@ -484,5 +505,7 @@ namespace master.framework
             return ret;
         }
         #endregion
+
+
     }
 }
