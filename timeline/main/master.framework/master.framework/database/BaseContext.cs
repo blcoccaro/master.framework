@@ -10,6 +10,7 @@ namespace master.framework.database
     {
         public static string GetConnectionString(string connectionStringName)
         {
+            return connectionStringName;
             System.Data.SqlClient.SqlConnectionStringBuilder builder = new System.Data.SqlClient.SqlConnectionStringBuilder(connectionStringName);
             builder.MultipleActiveResultSets = true;
             return builder.ConnectionString.ToString();
