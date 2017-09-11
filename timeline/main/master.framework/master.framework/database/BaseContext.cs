@@ -8,6 +8,13 @@ namespace master.framework.database
 {
     public class BaseContext : DbContext
     {
+        public static string GetConnectionString(string connectionStringName)
+        {
+            System.Data.SqlClient.SqlConnectionStringBuilder builder = new System.Data.SqlClient.SqlConnectionStringBuilder(connectionStringName);
+            builder.MultipleActiveResultSets = true;
+            return builder.ConnectionString.ToString();
+
+        }
         private System.Data.Entity.DbContextTransaction transaction;
         public Dictionary<string, string> DicHelper { get; set; } = new Dictionary<string, string>();
         public Enumerators.Database DatabaseType { get; set; }
@@ -32,12 +39,12 @@ namespace master.framework.database
 
         #region Constructors
         public BaseContext()
-            : base("cnDefault")
+            : base(GetConnectionString("cnDefault"))
         {
             Initialize();
         }
         public BaseContext(string cnName)
-            : base(cnName)
+            : base(GetConnectionString(cnName))
         {
             Initialize();
         }
@@ -89,7 +96,6 @@ namespace master.framework.database
             SetDatabaseType();
             ((System.Data.Entity.Infrastructure.IObjectContextAdapter)this).ObjectContext.Connection.Open();
             //transaction = this.Database.Connection.BeginTransaction(System.Data.IsolationLevel.Snapshot);
-
             if (LogSave != null) { this.Database.Log = l => LogSave(l); }
         }
         #endregion
