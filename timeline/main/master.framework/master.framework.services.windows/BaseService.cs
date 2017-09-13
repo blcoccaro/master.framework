@@ -116,6 +116,11 @@ namespace master.framework.services.windows
                     break;
             }
         }
+
+        public void ProcessWhileDebugIsAttached()
+        {
+            Process(null);
+        }
         private void Process(object state)
         {
             if (master.framework.Configuration.MasterFramework.Service.Debug.isON)
@@ -165,10 +170,17 @@ namespace master.framework.services.windows
             throw new NotImplementedException();
         }
 
-        public void CallBack(int messageType, string message)
+        public virtual void CallBack(int messageType, string message)
         {
             throw new NotImplementedException();
         }
+
+        public virtual void CallBackMultiple(int id, params string[] message)
+        {
+            throw new NotImplementedException();
+        }
+
+
         #endregion
 
         #endregion

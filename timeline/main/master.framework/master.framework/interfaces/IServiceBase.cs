@@ -12,5 +12,7 @@ namespace master.framework.interfaces
         void Beacon(string serviceId = null, string message = null);
 
         void CallBack(int messageType, string message);
+
+        void CallBackMultiple(int id, params string[] message);
     }
 }
