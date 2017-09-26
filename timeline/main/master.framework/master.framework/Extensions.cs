@@ -240,6 +240,238 @@ namespace master.framework
         #endregion
 
         #region Extensions for System.String
+        public static bool ValidateEmail(this string value)
+        {
+            bool ret = false;
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                var emails = value.Split(',');
+
+                for (int i = 0; i < emails.Length; i++)
+                {
+                    if (!System.Text.RegularExpressions.Regex.IsMatch(emails[i], @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                    {
+                        ret = false;
+                    }
+                    else
+                    {
+                        ret = true;
+                    }
+                }
+            }
+
+            return ret;
+        }
+        public static bool ValidateBrazilianRG(this string strRG, bool blankError, out List<string> msg)
+        {
+            bool ret = true;
+            msg = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(strRG))
+            {
+                if (blankError)
+                {
+                    msg.Add("RG obrigatório.");
+                    ret = false;
+                }
+            }
+            else
+            {
+                if (strRG.Length > 14)
+                {
+                    msg.Add("RG inválido. Número de caracteres inválidos.");
+                    ret = false;
+                }
+                else
+                {
+                    foreach (var item in strRG)
+                    {
+                        if (!Char.IsNumber(item))
+                        {
+                            if (!Char.IsLetter(item))
+                            {
+                                if (item != '.' && item != '-')
+                                {
+                                    msg.Add("Caractere não permitido para o campo RG.");
+                                    ret = false;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            return ret;
+        }
+        public static bool ValidateBrazilianPIS(this string obj)
+        {
+            bool ret;
+
+            if (obj.Trim() == "00000000000") { return false; }
+
+            int[] multiplicador = new int[10] { 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+            int sum;
+            int remnant;
+
+            if (obj.Trim().Length != 11) { return false; }
+
+            obj = obj.Trim();
+            obj = obj.Replace("-", "").Replace(".", "").PadLeft(11, '0');
+
+            sum = 0;
+            for (int i = 0; i < 10; i++)
+            {
+                sum += int.Parse(obj[i].ToString()) * multiplicador[i];
+            }
+
+            remnant = sum % 11;
+
+            if (remnant < 2) { remnant = 0; }
+            else { remnant = 11 - remnant; }
+
+            ret = obj.EndsWith(remnant.ToString());
+
+            return ret;
+        }
+        public static bool ValidateBrazilianCPF(this string obj)
+        {
+            string clearCPF;
+            int[] cpfArray;
+            int totalDigitI = 0;
+            int totalDigitII = 0;
+            int modI;
+            int modII;
+
+            clearCPF = obj.Trim();
+            clearCPF = clearCPF.Replace("-", "");
+            clearCPF = clearCPF.Replace(".", "");
+
+            if (clearCPF.Length != 11) { return false; }
+
+            if (clearCPF.Equals("00000000000") || clearCPF.Equals("11111111111") || clearCPF.Equals("22222222222") || clearCPF.Equals("33333333333") ||
+             clearCPF.Equals("44444444444") || clearCPF.Equals("55555555555") || clearCPF.Equals("66666666666") || clearCPF.Equals("77777777777") ||
+             clearCPF.Equals("88888888888") || clearCPF.Equals("99999999999"))
+                return false;
+
+            foreach (char c in clearCPF) { if (!char.IsNumber(c)) { return false; } }
+
+            cpfArray = new int[11];
+
+            for (int i = 0; i < clearCPF.Length; i++) { cpfArray[i] = int.Parse(clearCPF[i].ToString()); }
+
+            for (int position = 0; position < cpfArray.Length - 2; position++)
+            {
+                totalDigitI += cpfArray[position] * (10 - position);
+                totalDigitII += cpfArray[position] * (11 - position);
+            }
+
+            modI = totalDigitI % 11;
+            if (modI < 2) { modI = 0; }
+            else { modI = 11 - modI; }
+            if (cpfArray[9] != modI) { return false; }
+
+            totalDigitII += modI * 2;
+            modII = totalDigitII % 11;
+
+            if (modII < 2) { modII = 0; }
+            else { modII = 11 - modII; }
+
+            if (cpfArray[10] != modII) { return false; }
+
+            return true;
+        }
+        public static bool ToBool(this string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) { return false; }
+            var aux = text.ToBoolNull();
+            return aux.HasValue ? aux.Value : false;
+        }
+        public static bool? ToBoolNull(this string text)
+        {
+            bool? ret = null;
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                text = text.Trim().ToLower();
+                switch (text)
+                {
+                    case "1":
+                    case "true":
+                    case "verdadeiro":
+                    case "sim":
+                        ret = true;
+                        break;
+                    case "0":
+                    case "false":
+                    case "não":
+                    case "nao":
+                    case "falso":
+                        ret = false;
+                        break;
+                }
+            }
+            return ret;
+        }
+        public static DateTime ToDateTime(this string text, string pattern = "dd/MM/yyyy", string cultureInfo = "pt-BR")
+        {
+            if (string.IsNullOrWhiteSpace(text)) { return DateTime.MinValue; }
+            var aux = text.ToDateTimeNull(pattern: pattern, cultureInfo: cultureInfo);
+            return aux.HasValue ? aux.Value : DateTime.MinValue;
+        }
+        public static DateTime? ToDateTimeNull(this string text, string pattern = "dd/MM/yyyy", string cultureInfo = "pt-BR")
+        {
+            DateTime? ret = null;
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                DateTime aux = DateTime.MinValue;
+                CultureInfo ci = new CultureInfo(cultureInfo);
+
+                if (DateTime.TryParseExact(text, pattern, ci, DateTimeStyles.None, out aux))
+                {
+                    ret = aux;
+                }
+            }
+
+            return ret;
+        }
+        public static int ToInt(this string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) { return 0; }
+            var aux = text.ToIntNull();
+            return aux.HasValue ? aux.Value : 0;
+        }
+        public static int? ToIntNull(this string text)
+        {
+            int? ret = null;
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                int aux = 0;
+                if (int.TryParse(text, out aux))
+                {
+                    ret = aux;
+                }
+            }
+            return ret;
+        }
+        public static decimal ToDecimalNoFloatingPoint(this string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) { return 0; }
+            var aux = text.ToDecimalNullNoFloatingPoint();
+            return aux.HasValue ? aux.Value : 0;
+        }
+        public static decimal? ToDecimalNullNoFloatingPoint(this string text)
+        {
+            decimal? ret = null;
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                decimal aux = 0;
+                if (decimal.TryParse(text, out aux))
+                {
+                    ret = aux;
+                }
+            }
+            return ret;
+        }
         public static string RemoveDiacritics(this string text)
         {
             var normalizedString = text.Normalize(NormalizationForm.FormD);

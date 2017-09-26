@@ -180,7 +180,6 @@ namespace master.framework.services.windows
             throw new NotImplementedException();
         }
 
-
         #endregion
 
         #endregion
