@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.6", "4.6", "{C8BAD4C3-5F26-4E3B-820A-270EA2382536}"
 EndProject
@@ -26,6 +26,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "master.framework.web", "master.framework.web\master.framework.web.csproj", "{08691D62-3C27-4275-AFA8-D6B3E024C88E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "master.framework.web.js", "master.framework.web.js\master.framework.web.js.csproj", "{7884A30A-03E4-4101-ABDE-2064216B064A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "automation.testing", "automation.testing", "{FC5BDB64-D3C5-4D30-A8AC-84364A60D515}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "master.framework.selenium", "master.framework.selenium\master.framework.selenium.csproj", "{E509DB67-4946-4AF0-9261-F62BE27B015E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +57,10 @@ Global
 		{7884A30A-03E4-4101-ABDE-2064216B064A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7884A30A-03E4-4101-ABDE-2064216B064A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7884A30A-03E4-4101-ABDE-2064216B064A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E509DB67-4946-4AF0-9261-F62BE27B015E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E509DB67-4946-4AF0-9261-F62BE27B015E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E509DB67-4946-4AF0-9261-F62BE27B015E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E509DB67-4946-4AF0-9261-F62BE27B015E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,31 +77,7 @@ Global
 		{95C3B86A-8860-4BE4-8E15-733157340E55} = {1B4BE6CB-1034-4D0A-8E17-06E01A4C9E60}
 		{08691D62-3C27-4275-AFA8-D6B3E024C88E} = {23524484-FFD7-48F5-BB17-4677B476B06D}
 		{7884A30A-03E4-4101-ABDE-2064216B064A} = {23524484-FFD7-48F5-BB17-4677B476B06D}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 6
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://blcoccaro.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = master.framework\\master.framework.csproj
-		SccProjectTopLevelParentUniqueName1 = master.framework.sln
-		SccProjectName1 = master.framework
-		SccLocalPath1 = master.framework
-		SccProjectUniqueName2 = master.framework.test\\master.framework.test.csproj
-		SccProjectTopLevelParentUniqueName2 = master.framework.sln
-		SccProjectName2 = master.framework.test
-		SccLocalPath2 = master.framework.test
-		SccProjectUniqueName3 = master.framework.services.windows\\master.framework.services.windows.csproj
-		SccProjectTopLevelParentUniqueName3 = master.framework.sln
-		SccProjectName3 = master.framework.services.windows
-		SccLocalPath3 = master.framework.services.windows
-		SccProjectUniqueName4 = master.framework.web\\master.framework.web.csproj
-		SccProjectTopLevelParentUniqueName4 = master.framework.sln
-		SccProjectName4 = master.framework.web
-		SccLocalPath4 = master.framework.web
-		SccProjectUniqueName5 = master.framework.web.js\\master.framework.web.js.csproj
-		SccProjectTopLevelParentUniqueName5 = master.framework.sln
-		SccProjectName5 = master.framework.web.js
-		SccLocalPath5 = master.framework.web.js
+		{FC5BDB64-D3C5-4D30-A8AC-84364A60D515} = {C8BAD4C3-5F26-4E3B-820A-270EA2382536}
+		{E509DB67-4946-4AF0-9261-F62BE27B015E} = {FC5BDB64-D3C5-4D30-A8AC-84364A60D515}
 	EndGlobalSection
 EndGlobal
