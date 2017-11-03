@@ -55,10 +55,6 @@ namespace master.framework.selenium
             Driver.Manage().Window.Maximize();
 
             Driver.Navigate().GoToUrl(GetURI(environment));
-            if (checkApplicationRunning(Driver.Url))
-            {
-                throw new NotAnswerException(Driver.Url);
-            }
         }
 
         public void Dispose()

@@ -647,7 +647,12 @@ namespace master.framework
 
             return ret;
         }
-
+        public static string OnlyCharAndNumber(this string value, bool keepSpace = false)
+        {
+            var regex = keepSpace ? @"[^0-9a-zA-Z ]+" : @"[^0-9a-zA-Z]+";
+            value = string.IsNullOrWhiteSpace(value) ? string.Empty : System.Text.RegularExpressions.Regex.Replace(value, regex, "");
+            return value;
+        }
         public static string Normalize2(this string value)
         {
             value = value.Replace("%", "");
